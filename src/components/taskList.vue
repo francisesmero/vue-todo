@@ -1,39 +1,23 @@
 <template>
-  <h2 class="text-neutral-500 font-bold mb-4">You have 10 task for today</h2>
+  <h2 class="text-neutral-500 font-bold mb-4">You have {{ totalItems }} task for today</h2>
 
-<div class="card-todo flex flex-row gap-x-2">
-<div class="basis-5/6 card-item bg-white p-4 flex flex-row justify-between items-center rounded-[15px] my-2">
+<div class="card-todo flex flex-row gap-x-2" v-for="todo in todos" :key="todo.id">
+<div class="w-full card-item bg-white p-4 flex flex-row justify-between items-center rounded-[15px] my-2">
     <div class="flex items-center space-x-4">
-        <span class="rounded-full p-2 w-2 h-2 bg-red-500"></span>
-        <p class="text-neutral-600 ml-6">Workout</p>
+        <span class="rounded-full p-2 w-2 h-2" 
+            :class="{
+                'bg-red-500': todo.todoCategory === 'health',
+                'bg-gradient-primary': todo.todoCategory === 'work',
+                'bg-orange-400': todo.todoCategory === 'personal',
+                'bg-green-300': todo.todoCategory === 'shopping'
+              }"
+            ></span>
+        <p class="text-neutral-600 ml-6">{{todo.todoItem}}</p>
     </div>
     
     <div class="flex items-center space-x-4">
-    <p class="text-neutral-500">8:00 am</p>
+    <p class="text-neutral-500">{{todo.todoTime}}</p>
     </div>
-</div>
-<div class="basis-1/6 card-actions bg-white p-2 rounded-[15px] my-2 flex flex-row gap-x-2">
-    <button
-      class="border-2 border-solid p-1 lg:px-3 lg:w-full rounded-[10px] text-[#4a90e2] hover:text-white hover:bg-[#4a90e2] transition-all duration-200 ease-in-out"
-      @click="finishAction"
-    >
-      <span class="hidden sm:inline">Finish</span>
-      <span class="sm:hidden"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-</svg>
-</span>
-    </button>
-
-    <button
-      class="border-2 border-solid p-1 lg:px-3 lg:w-full rounded-[10px] text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200 ease-in-out"
-      @click="deleteAction"
-    >
-      <span class="hidden sm:inline">Delete</span>
-      <span class="sm:hidden"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-        </svg>
-        </span>
-    </button>
 </div>
 </div>
 
@@ -45,14 +29,24 @@
 
 </template>
 
-<script>
-export default {
-    setup () {
-        
+<script setup>
 
-        return {}
-    }
-}
+import {ref, onMounted, computed } from 'vue';
+import data from '../../data.json'
+
+const todos = ref([]);
+
+onMounted(()=> {
+
+    todos.value = data.todos;
+
+})
+
+
+
+const totalItems = computed(() => todos.value.length);
+
+
 </script>
 
 <style lang="scss" scoped>

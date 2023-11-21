@@ -1,0 +1,65 @@
+{
+    "todos": [
+      {
+        "id": "1",
+        "todoItem": "sprint planning",
+        "todoCategory": "work",
+        "todoTime": "09:00"
+      },
+      {
+        "id": "2",
+        "todoItem": "morning jog",
+        "todoCategory": "health",
+        "todoTime": "06:30"
+      },
+      {
+        "id": "3",
+        "todoItem": "grocery shopping",
+        "todoCategory": "shopping",
+        "todoTime": "16:00"
+      },
+      {
+        "id": "4",
+        "todoItem": "read a book",
+        "todoCategory": "personal",
+        "todoTime": "20:00"
+      },
+      {
+        "id": "5",
+        "todoItem": "team meeting",
+        "todoCategory": "work",
+        "todoTime": "10:30"
+      },
+      {
+        "id": "6",
+        "todoItem": "meditate",
+        "todoCategory": "health",
+        "todoTime": "07:00"
+      },
+      {
+        "id": "7",
+        "todoItem": "buy clothes",
+        "todoCategory": "shopping",
+        "todoTime": "14:00"
+      },
+      {
+        "id": "8",
+        "todoItem": "learn a new skill",
+        "todoCategory": "personal",
+        "todoTime": "17:30"
+      },
+      {
+        "id": "9",
+        "todoItem": "project presentation",
+        "todoCategory": "work",
+        "todoTime": "15:00"
+      },
+      {
+        "id": "10",
+        "todoItem": "exercise",
+        "todoCategory": "health",
+        "todoTime": "06:00"
+      }
+    ]
+  }
+  
