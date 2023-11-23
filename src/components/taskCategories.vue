@@ -117,44 +117,43 @@
                 </p>
               </div>
 
-              <div class="mt-4 flex flex-row">
+              <form @submit.prevent="submit">
+
+              <div class="mt-4 flex flex-row gap-x-2">
                 <div
-                  class="flex w-full rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-gradient-primary sm:max-w-md"
+                  class="flex basis-2/3 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-gradient-primary sm:max-w-md"
                 >
                   <span
                     class="flex select-none items-center pl-3 text-gray-500 sm:text-sm"
                     >{{ selectedValue }} /</span
                   >
+                
                   <input
+                    v-model="todoTask"
                     type="text"
-                    name="username"
-                    id="username"
-                    autocomplete="username"
                     class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6 ring-0 outline-none"
                     placeholder="your todo"
                   />
                 </div>
+
+                <div class="flex basis-1/3 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-gradient-primary sm:max-w-md">
+                  <input v-model="todoTime" @input="validateTodoTime" class="block flex-1 border-0 bg-transparent py-1.5 px-2 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6 ring-0 outline-none" placeholder="todo time eg. 1230">
+                </div>
+
+               
               </div>
 
-     
-
-              <div class="mt-3  gap-x-2 w-full">
-                 <h2 class="w-1/2 text-gray-600">todo time</h2>
-                <div class="flex mt-2 w-2/3 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                  <input type="time" class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6 ring-0 outline-none">
-                </div>
-                
-            </div>
 
               <div class="mt-4">
                 <button
-                  type="button"
-                  class="inline-flex justify-center rounded-md border border-transparent bg-gradient-primary px-4 py-2 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 float-right"
+                  type="submit"
+                  class="inline-flex justify-center rounded-md border border-transparent bg-gradient-primary px-4 py-2 text-sm font-medium text-white hover:bg-blue-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 float-right"
                   @click="closeModal"
                 >
                   Add todo
                 </button>
               </div>
+              </form> 
             </DialogPanel>
           </TransitionChild>
         </div>
@@ -165,6 +164,7 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
+import data from "../../data.json";
 import {
   TransitionRoot,
   TransitionChild,
@@ -173,10 +173,21 @@ import {
   DialogTitle,
 } from "@headlessui/vue";
 
-const selectedValue = ref(null);
-const time = ref([]);
+onMounted(() => {
+  todos.value = data.todos;
+});
 
+const selectedValue = ref(null);
 const isOpen = ref(false);
+const todos = ref([]);
+
+const emits = defineEmits('change','update');
+
+
+// form inputs
+const todoTask = ref('');
+const todoTime = ref('');
+
 
 function closeModal() {
   isOpen.value = false;
@@ -187,11 +198,50 @@ function openModal(val) {
 }
 
 
-onMounted(()=> {
-  time.value = Array.from({ length: 24 }, (_, index) => index + 1);
-})
+const validateTodoTime = () => {
+  todoTime.value = todoTime.value.replace(/\D/g, '');
+
+  if(todoTime.value.length > 4) {
+    todoTime.value  = todoTime.value.slice(0,4);
+  }
+
+  const todoTimeValue = parseInt(todoTime.value, 10);
+  if(isNaN(todoTimeValue) || todoTimeValue < 0 || todoTimeValue > 2359) {
+    todoTime.value = '';
+  }
+}
+
+const submit = () => {
+  const formData = {
+    id: generateNextId(),
+    todoItem: todoTask.value,
+    todoCategory: selectedValue,
+    todoTime: formatTime(todoTime.value)
+  };
+
+  todos.value.push(formData);
+
+  emits('submit', formData)
+  todoTask.value = '';
+  todoTime.value = '';
+
+}
 
 
+const formatTime = (time) => {
+  const hours = time.substr(0,2);
+  const minutes = time.substr(2,2);
+  return `${hours}:${minutes}`;
+}
+
+
+const generateNextId = () => {
+  const lastTodo = todos.value[todos.value.length - 1];
+  if (!lastTodo) {
+    return 1;
+  }
+  return parseInt(lastTodo.id, 10) + 1;
+};
 
 
 

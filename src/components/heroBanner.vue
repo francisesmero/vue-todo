@@ -12,11 +12,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch } from "vue";
 
-watch(name, (newName) => {
-  localStorage.setItem("name", newName);
-});
 </script>
 
 <style lang="scss" scoped></style>
