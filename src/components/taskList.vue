@@ -21,7 +21,7 @@
             'bg-green-300': todo.todoCategory === 'shopping',
           }"
         ></span>
-        <p class="text-neutral-600 ml-6">{{ todo.todoItem }}</p>
+        <p class="text-neutral-600 ml-6"><span class="mr-2">{{ todo.id }}.)</span>{{ todo.todoItem }} </p> 
       </div>
 
       <div class="flex items-center space-x-4">

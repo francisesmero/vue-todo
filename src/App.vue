@@ -38,7 +38,7 @@ import taskList from "./components/taskList.vue";
     </div>
 
     <heroBanner />
-    <taskCategories />
+    <taskCategories><p class="text-gray-900"> hellow </p></taskCategories>
     <taskList />
   </div>
 </template>
